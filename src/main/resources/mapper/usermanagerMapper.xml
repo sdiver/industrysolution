@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.usermanagerMapper" >
+
+	<select id="checkusername" parameterType="map" resultType="int">
+	
+		select count(*) from usertable
+		
+		where username = #{username,jdbcType=VARCHAR}
+		
+	</select>
+	
+	<insert id="register" parameterType="map">
+	
+		insert into usertable(userid, username, userpassword, uname)
+		
+		values
+		
+			(#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+			#{userpassword,jdbcType=VARCHAR},#{uname,jdbcType=VARCHAR})
+	
+	</insert>
+
+	<select id="login" parameterType="map" resultType="usertable">
+	
+		select userid, username, uname, logintime, profile_photo_url from usertable
+		
+		where username = #{username,jdbcType=VARCHAR}
+		
+		and userpassword = #{userpassword,jdbcType=VARCHAR}
+			
+	</select>
+	
+	<update id="settime" parameterType="map">
+	
+		update usertable
+		
+		set logintime = sysdate(),
+		
+		token = #{token,jdbcType = VARCHAR}
+		
+		where userid = #{userid,jdbcType =VARCHAR }
+			
+	</update>
+	
+	<select id="finduser" parameterType="map" resultType="usertable">
+	
+		select userid, username, uname, logintime from usertable
+		
+		where userid = #{userid,jdbcType=VARCHAR}
+		
+		and userpassword = #{userpassword,jdbcType=VARCHAR}
+			
+	</select>
+	
+	<update id="changepwd" parameterType="map">
+	
+		update usertable
+		
+		set userpassword = #{newpassword, jdbcType=VARCHAR}
+		
+		where userid = #{userid,jdbcType = VARCHAR}
+	
+	</update>
+	
+	<select id="checktoken" parameterType="map" resultType="int">
+	
+		select count(*) from usertable
+		
+		where userid = #{userid,jdbcType= VARCHAR}
+		
+			and token = #{token, jdbcType= VARCHAR }
+	
+	</select>
+	
+	<update id="changeImage" parameterType="map">
+		update usertable
+		set profile_photo_url = #{picminiUrl, jdbcType = VARCHAR}
+		where userid = #{userid, jdbcType=VARCHAR}
+	</update>
+	
+ </mapper>

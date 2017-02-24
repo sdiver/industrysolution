@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.tapMapper" >
+
+	<update id="modifytaptoproject" parameterType="map" >
+	
+		update projectinfo
+		
+		set thirdtype = #{thirdtypeid, jdbcType=VARCHAR}
+		
+		where projectid = #{projectid, jdbcType=VARCHAR}
+	
+	</update>
+	
+	<select id="listtap" resultType="tapinfo">
+	
+		select thirdtypeid, thirdtype from typetap
+	
+	</select>
+	
+	<insert id="addtap" parameterType="String">
+	
+		insert into typetap(thirdtype, TestColor, BackgroundColor)
+		
+		values(#{tapname,jdbcType=VARCHAR},
+		
+		    #{TestColor, jdbcType=VARCHAR},
+		    
+		    #{BackgroundColor, jdbcType=VARCHAR}
+		
+		)
+	
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.solutionmanagerMapper" >
+
+	<select id="check" parameterType="String" resultType="int">
+	
+		select count(projectid) from projectinfo
+		
+		where projectname =#{projectname, jdbcType=VARCHAR}
+	
+	</select>
+	
+	<insert id="addproject" parameterType="map">
+	
+		insert into projectinfo(projectid, projectname, projectinfo, projectuserid, firsttype, 
+		    secondtype, thirdtype, projecttime)
+		values(#{projectid, jdbcType=VARCHAR}, #{projectname, jdbcType=VARCHAR}, 
+		    #{projectinfo, jdbcType=VARCHAR}, #{projectuserid, jdbcType=VARCHAR},
+		    #{firsttype, jdbcType=INTEGER}, #{secondtype, jdbcType=INTEGER}, 
+		    #{thirdtype, jdbcType=VARCHAR},#{projecttime, jdbcType=DATE})
+	
+	</insert>
+	
+	<select id="findprojectid" parameterType="String" resultType="projectinfo">
+		select a.projectid, a.projectname, a.projectinfo, a.projectuserid, b.uname
+		from(	
+		    select projectid, projectname, projectinfo, projectuserid from projectinfo 
+			where projectid = #{projectid, jdbcType=VARCHAR}
+		) a left join
+		usertable b on a.projectuserid = b.userid
+	</select>
+	
+	<insert id="addperson" parameterType="map">
+		insert into projectlink(personlinkid, projectid, userid)
+		values(#{personlinkid, jdbcType=VARCHAR}, #{projectid, jdbcType=VARCHAR}, #{userid, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="modifyproject" parameterType="map">
+		update projectinfo
+		set 
+		<if test="projectname!=null">
+				projectname = #{projectname, jdbcType=VARCHAR},
+		</if>
+		<if test="projectinfo!=null">
+				projectinfo = #{projectinfo, jdbcType=VARCHAR},
+		</if>
+		projecttime = #{projecttime, jdbcType=DATE}
+		where projectid = #{projectid, jdbcType=VARCHAR}
+		and projectuserid = #{projectuserid, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteproject" parameterType="map">
+		delete from projectinfo
+		where projectid = #{projectid, jdbcType=VARCHAR}
+		and projectuserid = #{projectuserid, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deletegperson" parameterType="map">
+		delete from projectlink
+		where projectid = #{projectid, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteperson" parameterType="map">
+		delete from projectlink
+		where projectid = #{projectid, jdbcType=VARCHAR}
+		and userid = #{userid, jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deletefile" parameterType="String">
+		delete from projectfile
+		where projectid = #{projectid, jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="listproject" parameterType="map" resultType="projectinfo">
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc,count(f.listid) countal,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,count(e.listid) countsc,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,count(d.listid) countxq,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,count(g.userid) countperson,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from 
+				( 
+				select @rownum:=@rownum+1 AS rownum,a.projectid, a.projectname, a.projectinfo, a.projectuserid,b.uname projectuname,a.firsttype,a.secondtype,a.thirdtype, a.projecttime from 
+				projectinfo a,usertable b , (SELECT @rownum:=0) r
+				where a.projectuserid = b.userid 
+				<if test="firsttype != 0">
+				
+					and firsttype = #{firsttype, jdbcType=INTEGER}
+				
+				</if>
+				
+				<if test="secondtype != 0">
+				
+					and secondtype = #{secondtype, jdbcType=INTEGER}
+				
+				</if>
+				
+				<if test="order ==0">
+					order by rownum
+				</if>
+				<if test="order !=0">
+					order by rownum desc
+				</if>
+				limit ${min},${pagePerNum}
+				)c left join projectlink as g on g.projectid = c.projectid and g.userid =#{userid, jdbcType=VARCHAR}
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname
+				)c left join projectfile as d on d.projectid=c.projectid and d.filetype=1 and d.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname, c.countperson
+				)c left join projectfile as e on e.projectid=c.projectid and e.filetype=2  and e.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq
+				)c left join projectfile as f on f.projectid=c.projectid and f.filetype=3 and f.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc	
+	</select>
+	
+	<select id="listuser" parameterType="map" resultType="projectuser">
+		select b.userid, b.uname from projectinfo a,usertable b
+		where a.projectuserid = b.userid 
+		    and a.firsttype = #{firstType, jdbcType = INTEGER} 
+		    <if test="secondType!=0">
+		    	and secondtype = #{secondType, jdbcType = INTEGER}
+		    </if>
+		group by b.userid, b.uname
+	</select>
+	
+	<select id="countproject" parameterType="map" resultType="int">
+		select count(projectid) from projectinfo where 1=1
+				<if test="uuserid!=null">
+					and projectuserid =#{uuserid, jdbcType=VARCHAR}
+				</if>
+				<if test="projectname!=null">
+					and projectname like  '%${projectname}%'
+				</if>
+				<if test="firsttype!=0">
+					and firsttype=#{firsttype, jdbcType=INTEGER}
+				</if>
+				<if test="secondtype!=0">
+					and secondtype=#{secondtype, jdbcType=INTEGER}
+				</if>
+	</select>
+	
+	<select id="searchproject" parameterType="map" resultType="projectinfo">
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc,count(f.listid) countal,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,count(e.listid) countsc,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,count(d.listid) countxq,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+				(
+				select c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,count(g.userid) countperson,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from 
+				( 
+				select @rownum:=@rownum+1 AS rownum,a.projectid, a.projectname, a.projectinfo, a.projectuserid,b.uname projectuname,a.firsttype,a.secondtype,a.thirdtype, a.projecttime from 
+				projectinfo a,usertable b , (SELECT @rownum:=0) r
+				where a.projectuserid = b.userid 
+				<if test="projectMintime != null">
+				    and a.projecttime &gt;= #{projectMintime, jdbcType=DATE}
+				</if>
+				<if test="projectMaxtime != null">
+				    and a.projecttime &lt;= #{projectMaxtime, jdbcType=DATE}
+				</if>
+				<if test="uuserid!=null">
+				    and b.userid =#{uuserid, jdbcType=VARCHAR}
+				</if>
+				<if test="projectname!=null">
+				    and a.projectname like  '%${projectname}%'
+				</if>
+				<if test="firsttype!=0">
+					and firsttype=#{firsttype, jdbcType=INTEGER}
+				</if>
+				<if test="secondtype!=0">
+					and secondtype=#{secondtype, jdbcType=INTEGER}
+				</if>
+				<if test="order==0">
+					order by rownum
+				</if>
+				<if test="order!=0">
+					order by rownum desc
+				</if>
+				limit ${min},${pagePerNum}
+				)c left join projectlink as g on g.projectid = c.projectid and g.userid =#{userid, jdbcType=VARCHAR}
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname
+				)c left join projectfile as d on d.projectid=c.projectid and d.filetype=1  and d.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname, c.countperson
+				)c left join projectfile as e on e.projectid=c.projectid and e.filetype=2   and e.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq
+				)c left join projectfile as f on f.projectid=c.projectid and f.filetype=3 and f.updateid = 1
+				group by c.rownum,c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc	
+	</select>
+	
+	<select id="addpersonlist" parameterType="map" resultType="projectuser">
+		select a.userid, a.uname, count(b.userid) checkenter from usertable as a 
+		left join 
+		(select userid from projectlink where projectid = #{projectid, jdbcType=VARCHAR}) as b
+		on a.userid = b.userid
+		group by a.userid, a.uname
+	</select>
+	
+	<select id="projectinfo" parameterType="String" resultType="projectinfo">
+		select c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc,count(f.listid) countal,c.firsttype,c.secondtype,c.thirdtype, c.projecttime
+		from
+		(
+		select c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,count(e.listid) countsc,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+		(
+		select c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,count(d.listid) countxq,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from
+		(
+		select c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,count(g.userid) countperson,c.firsttype,c.secondtype,c.thirdtype, c.projecttime from 
+		( 
+		select a.projectid, a.projectname, a.projectinfo, a.projectuserid,b.uname projectuname ,a.firsttype,a.secondtype,a.thirdtype, a.projecttime
+		from projectinfo a,usertable b 
+		where a.projectuserid = b.userid 
+		
+		and a.projectid = #{projectid, jdbcType=VARCHAR}
+		
+		 )c 
+		left join projectlink as g on g.projectid = c.projectid
+		group by c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname
+		)c left join projectfile as d on d.projectid=c.projectid and d.filetype=1 and d.updateid=1
+		group by c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname, c.countperson
+		)c left join projectfile as e on e.projectid=c.projectid and e.filetype=2  and e.updateid=1
+		group by c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq
+		)c left join projectfile as f on f.projectid=c.projectid and f.filetype=3  and f.updateid=1
+		group by c.projectid, c.projectname, c.projectinfo, c.projectuserid, c.projectuname,c.countperson,c.countxq,c.countsc
+
+	
+	</select>
+	
+	<select id="personinfo" parameterType="String" resultType="projectuser">
+		select k.userid, b.uname from projectlink k, usertable b 
+		where projectid = #{projectid, jdbcType=VARCHAR}
+		and k.userid = b.userid
+	</select>
+	
+	<select id="fileinfo" parameterType="String" resultType="fileinfo">
+		select a.fileid, a.projectid, a.listid, a.filename, a.fileurl, a.filetype, a.userid, a.updateid, a.tail
+		from
+		(
+		select fileid, projectid, listid, filename, fileurl, filetype, userid, updateid, tail
+				from projectfile
+				where projectid = #{projectid, jdbcType=VARCHAR}
+				order by updateid desc
+		) as a
+		group by a.fileid
+	</select>
+	
+	<select id="usercount" parameterType="map" resultType="int">
+		select count(personlinkid) from projectlink
+		where projectid=#{projectid, jdbcType=VARCHAR}
+		and userid = #{userid, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findfilebyfileid" parameterType="String" resultType="fileinfo">
+		select fileid, projectid, listid, filename, fileurl, filetype, userid, updateid, tail
+		from projectfile
+		where fileid = #{fileid, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="listold" parameterType="map" resultType="fileinfo">
+		select fileid, projectid, listid, filename, fileurl, filetype, userid, updateid, tail
+		from projectfile
+		where projectid=#{projectid ,jdbcType=VARCHAR}
+		and listid=#{listid, jdbcType=INTEGER}
+		and fileid != #{fileid, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findtapname" parameterType="int" resultType="tapinfo">
+		select thirdtypeid,thirdtype,TestColor, BackgroundColor 
+		from typetap 
+		where thirdtypeid = #{thirdid, jdbcType=INTEGER}
+	</select>
+	
+</mapper>

@@ -1,0 +1,11 @@
+{
+	draftlist:{
+		"drop":"DROP TABLE IF EXISTS draftlist",
+		"create":"CREATE TABLE IF NOT EXISTS draftlist (id integer primary key, ReportDate text , username text , userId text , areaId text , areaName text , villageId text , villageName text , address text , GPSPosition text , ownername text , contributeId text , contributeName text , firstFoundId text , firstFoundName text , acreage text , caseinfo text , specialstatus text , isSend text)",
+		"insert":"INSERT INTO draftlist (ReportDate , username , userId , areaId, areaName , villageId , villageName , address , GPSPosition , ownername , contributeId , contributeName , firstFoundId , firstFoundName , acreage , caseinfo , specialstatus , isSend) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		"select_draftlist":"SELECT id,ReportDate FROM draftlist",
+		"select_draft":"SELECT * FROM draftlist WHERE id = ?",
+		"update":"UPDATE draftlist SET ReportDate=?, username=? , userId=? , areaId=?, areaName=? , villageId=? , villageName=? , address=? , GPSPosition=? , ownername=? , contributeId=? , contributeName=? , firstFoundId=? , firstFoundName=? , acreage=? , caseinfo=? , specialstatus=? , isSend=? WHERE id = ?",
+		"delete":"DELETE FROM draftlist WHERE id = ?"
+	}
+}

@@ -1,0 +1,67 @@
+<!-- 
+*AUTHOR:MT
+*DATE:2017-1-15
+*REVISER:
+*LAST CHANGE:
+-->
+<div ng-controller="workspaceCtrl as work" class="main" id="main">
+
+	<script type="text/ng-template" id="modal_show">
+		<div class="modal-header">
+            <h3 class="modal-title" id="modal-show-title">{{modal_show_title}}</h3>
+        </div>
+        <div class="modal-body" id="modal-show-body">
+            {{modal_show_text}}
+        </div>
+	</script>
+
+	<script type="text/ng-template" id="modal_logout">
+		<div class="modal-header">
+			<h3 class="modal-title" id="modal-title">提示</h3>
+		</div>
+		<div class="modal-body" id="modal-body">
+			是否注销？
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" type="button" ng-click="work.ok()">确定</button>
+			<button class="btn btn-default" type="button" ng-click="work.cancel()">取消</button>
+		</div>
+	</script>
+
+	<!-- 菜单 -->
+    <div class="menu container-fluid">
+    	<div class="row menu_header">
+    		<div class="menu_header_img">
+    			<div ng-class="img_style">{{img_uname}}</div>
+    		</div>
+    		<div class="menu_header_info">{{info.uname}}<br/>{{(info.logintime==null)?"首次登录":info.logintime}}</div>
+    		<div class="menu_header_btn">
+    			<!-- <span class="glyphicon glyphicon-menu-left"></span> -->
+    		</div>
+    	</div>
+    	<div class="row menu_content">
+    		<ul>
+    			<li ng-repeat="menu1 in menus">
+    				<div ng-class="(menu1.isSelect==true)?'menu_isSelect':''" ng-click="menu_goto(menu1);">
+    					<span class="h4"><span class="glyphicon glyphicon-{{menu1.menu_icon}}"></span>{{" " + menu1.menu_name}}</span>
+    				</div>
+					<ul ng-show="menu1.isOpen">
+						<li ng-repeat="menu2 in menu1.menu_child" ng-class="(menu2.isSelect==true)?'menu_isSelect':''" ng-click="menu_goto(menu2)">
+							<span class="small">{{menu2.menu_name}}</span>
+						</li>
+					</ul>
+    			</li>
+    		</ul>
+    	</div>
+    	<div class="row menu_footer">
+    		<div class="btn-group btn-group-justified">
+    			<a class="btn btn-primary" ng-click="work.modal_logout()"><span class="glyphicon glyphicon-off"></span></a>
+    			<a ui-sref="workspace.setting" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span></a>
+    		</div>
+    	</div>
+    </div>
+    <div class="content" ui-view="content"></div>
+    <div class="footer">
+    	CopyRight By 福建联通系统集成公司
+    </div>
+</div>

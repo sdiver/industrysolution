@@ -1,0 +1,49 @@
+<!-- 
+*AUTHOR:MT
+*DATE:2017-1-15
+*REVISER:
+*LAST CHANGE:
+-->
+
+<div class="main" ng-controller="loginCtrl">
+    <!-- 背景幻灯片 -->
+    <div class="bg_login">
+        <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+            <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container login_div">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="username">用户名：</label>
+                <div class="col-sm-8">
+                    <input type="text" id="username" class="form-control" placeholder="请输入用户名" ng-model="username" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">密码：</label>
+                <div class="col-sm-8">          
+                    <input type="password" id="pwd" class="form-control" placeholder="请输入密码" ng-model="userpassword" ng-keypress="btn_enter_login($event)" />
+                </div>
+            </div>
+            <div class="form-group"> 
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary btn-block" ng-model="ifSavePw" uib-btn-checkbox>
+                        <!-- {{showIfSavePw}} -->
+                        {{(ifSavePw == true)?'保存密码':'不保存密码'}}
+                    </button>
+                </div>       
+                <div class="col-sm-8">
+                    <button type="button" class="btn btn-primary btn-block" ng-click="btn_login()">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</div>

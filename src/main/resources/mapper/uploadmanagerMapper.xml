@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.uploadmanagerMapper" >
+
+	<select id="getfilebylistid" parameterType="map" resultType="String">
+	
+		select max(listid) from projectfile
+		
+		where projectid = #{projectid,jdbcType=VARCHAR}
+		
+	</select>
+	
+	<insert id="uploadfile" parameterType="map">
+	
+		insert into projectfile(fileid, projectid,listid, filename, fileurl, filetype, userid, updateid, tail)
+		
+		select  #{fileid, jdbcType=VARCHAR},
+		
+				   #{projectid, jdbcType=VARCHAR},
+				   
+				   count(listid)+1,
+				   
+				   #{filename, jdbcType=VARCHAR},
+				   
+				   #{fileurl, jdbcType=VARCHAR},
+				   
+				   #{filetype, jdbcType=INTEGER},
+				   
+				   #{userid, jdbcType=VARCHAR},
+				   
+				   #{updateid, jdbcType=INTEGER},
+				   
+				   #{tail, jdbcType=VARCHAR}
+				   
+		from projectfile where projectid =  #{projectid, jdbcType=VARCHAR}
+	
+	</insert>
+	
+	<insert id="updatefile" parameterType="map">
+	
+		insert into projectfile(fileid, projectid,listid, filename, fileurl, filetype, userid, updateid, tail)
+		
+		select  #{fileid, jdbcType=VARCHAR},
+		
+				   #{projectid, jdbcType=VARCHAR},
+				   
+				   #{listid, jdbcType=INTEGER},
+				   
+				   #{filename, jdbcType=VARCHAR},
+				   
+				   #{fileurl, jdbcType=VARCHAR},
+				   
+				   #{filetype, jdbcType=INTEGER},
+				   
+				   #{userid, jdbcType=VARCHAR},
+				   
+				   MAX(updateid) + 1,
+				   
+				   #{tail, jdbcType=VARCHAR}
+				   
+		from projectfile 
+		
+		where projectid =  #{projectid, jdbcType=VARCHAR}
+		
+		and listid =  #{listid, jdbcType=INTEGER}
+	
+	</insert>
+	
+	<select id="personlist" parameterType="map" resultType="int">
+	
+		select count(userid) from projectlink
+		
+		where projectid = #{projectid, jdbcType=VARCHAR}
+		
+		and userid = #{userid, jdbcType=VARCHAR}
+	
+	</select>
+	
+	<select id="findbyfileid" parameterType="String" resultType="fileinfo">
+	
+		select fileid, projectid, listid, filename, fileurl, filetype, userid, updateid, tail
+		
+		from projectfile
+		
+		where fileid = #{fileid, jdbcType=VARCHAR}
+	
+	</select>
+	
+	<delete id="deletefile" parameterType="String">
+	
+		delete from projectfile where fileid = #{fileid, jdbcType=VARCHAR}
+	
+	</delete>
+	
+	<select id="getfilebyid" parameterType="String" resultType="fileinfo">
+	
+		select fileid, projectid, listid, filename, fileurl, filetype, userid, updateid, tail
+		
+		from projectfile
+		
+		where fileid = #{fileid, jdbcType=VARCHAR}
+	
+	</select>
+	
+</mapper>

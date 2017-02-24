@@ -1,0 +1,367 @@
+/*
+*AUTHOR:MT
+*DATE:2017-1-15
+*REVISER:
+*LAST CHANGE:
+*/
+
+@charset "utf-8";
+/*主体框架*/
+*{
+	font-family: Verdana, Arial, '微软雅黑';
+	font-size: 16px;
+}
+html{
+	min-width: 1280px;
+	min-height: 600px;
+	height: 100%;
+}
+body{
+	width: 100%;
+	height: 100%;
+	background-color:#f1f1f1;
+}
+.main{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding-top: 20px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+/*通用*/
+body textarea{resize: none;}
+.float_right{float: right;}
+.position_a{position: absolute;}
+.position_r{position: relative;}
+.width_100{width: 100%;}
+.height_100{height: 100%;}
+.margin_top_0{margin-top: 0;}
+.padding_bottom_15{padding-bottom: 15px;}
+.left_auto{left: auto;}
+.line_height_34{line-height: 34px;}
+.text_align_center{text-align: center;}
+
+/*LOGIN*/
+.bg_login{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.bg_login>div{
+	width: 100%;
+	height: 100%;
+}
+.bg_login img{
+	width: 110%;
+	height: 100%;
+}
+.login_div{
+	position: absolute;
+	width: 500px;
+	bottom: 100px;
+	left: 50%;
+	margin-left: -250px;
+	padding-top: 20px;
+	background-color: #454545;
+	color: #fff;
+	border-radius: 5px;
+	-moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+	filter:alpha(opacity=90);
+    -moz-opacity:0.90;
+	opacity:0.90;
+}
+
+/*WORKSPACE*/
+.menu{
+	position: absolute;
+	left: 0;
+	width: 240px;
+	top: 0;
+	bottom: 30px;
+	background-color: #454545;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.menu_header{
+	height: 64px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #E5E5E5;
+}
+.menu_header .menu_header_img{
+	float: left;
+	width: 25%;
+	cursor: default;
+}
+.menu_header_img_s0{background-color: #f1fafa; color: #000;}
+.menu_header_img_s1{background-color: #e8ffe8; color: #000;}
+.menu_header_img_s2{background-color: #e8e8ff; color: #000;}
+.menu_header_img_s3{background-color: #8080c0; color: #fff;}
+.menu_header_img_s4{background-color: #e8d098; color: #0000ff;}
+.menu_header_img_s5{background-color: #efefda; color: #00bfff;}
+.menu_header_img_s6{background-color: #f2f1d7; color: #00bfff;}
+.menu_header_img_s7{background-color: #336699; color: #fff;}
+.menu_header_img_s8{background-color: #6699cc; color: #fff;}
+.menu_header_img_s9{background-color: #66cccc; color: #fff;}
+.menu_header .menu_header_img>div{
+	width: 40px;
+	height: 40px;
+	margin: 0 auto;
+	font-weight: bolder;
+	font-size: x-large;
+	text-align: center;
+	line-height: 40px;
+}
+.menu_header .menu_header_info{
+	float: left;
+	width: 60%;
+	color: #fff;
+	cursor: default;
+}
+.menu_header .menu_header_btn{
+	float: left;
+	width: 15%;
+	color: #fff;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+}
+.menu_header .menu_header_btn:hover{
+	color: #ddd;
+}
+.menu_content{
+	width: 100%;
+	position: absolute;
+	top: 64px;
+	bottom: 34px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.menu_content>ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.menu_content>ul>li{
+	background-color: #656565;
+	border-bottom: 1px solid #B5B5B5;
+	color: #D5D5D5;
+	cursor: pointer;
+}
+.menu_content>ul>li>div{
+	height: 40px;
+	line-height: 40px;
+	padding-left: 20px;
+}
+.menu_content>ul>li>div:hover{
+	background-color: #000;
+	color: #fff;
+}
+.menu_content>ul>li>ul{
+	list-style:none;
+	padding: 0;
+	margin: 0;
+}
+.menu_content>ul>li>ul>li{
+	height: 30px;
+	line-height: 30px;
+	padding-left: 30px;
+}
+.menu_content>ul>li>ul>li:hover{
+	background-color: #000;
+	color: #fff;
+}
+.menu_footer{
+	width: 100%;
+	height: 34px;
+	position: absolute;
+	bottom: 0;
+	background-color: #666;
+}
+.menu_isSelect{
+	background-color: #555;
+	border-right: 10px solid #000;
+	color: #fff;
+	font-size: larger;
+}
+.footer{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 30px;
+	background-color: #000;
+	color: #fff;
+	padding-left: 50px;
+	line-height: 30px;
+}
+.content{
+	position: absolute;
+	left: 240px;
+	right: 0;
+	top: 0;
+	bottom: 30px;
+}
+
+/*solutionmanager*/
+#solutionmanager .btn_header{
+	float: right;
+	margin-left: 10px;
+	cursor: pointer;
+}
+#solutionmanager .search{
+	transition: all linear 0.5s;
+	height: 230px;
+	border-bottom: 2px solid #666;
+	overflow-y: hidden;
+}
+#solutionmanager .search.ng-hide{
+	height: 0;
+	overflow-y: hidden;
+}
+#solutionmanager .search .search_body{
+	padding: 0 10px 10px;
+}
+#solutionmanager .search .search_body .search_title{
+	font-weight: 600;
+	font-size: large;
+}
+#solutionmanager .search .search_body .search_dorpbox{
+	padding-left: 0;
+	margin-left: 15px;
+}
+#solutionmanager .search .search_body label{
+	text-align: right;
+}
+#solutionmanager .search .search_footer{
+	padding: 10px;
+	border-top: 1px solid #E5E5E5;
+}
+#solutionmanager .projectList table tbody td span.label{
+	margin-right: 3px;
+	position: relative;
+	bottom: 1px;
+	font-weight: 100;
+}
+#solutionmanager .project .btn_footer{
+	padding-top: 15px;
+	border-top: 1px solid #E5E5E5;
+}
+#solutionmanager .project .tab_info{
+	padding-top: 15px;
+}
+#solutionmanager .project .tab_file{
+	border-bottom: 1px solid #E5E5E5;
+}
+#solutionmanager .project .tab_file_menu{
+	height: 100%; /*希望占底*/
+	border-right: 1px solid #E5E5E5;
+}
+#solutionmanager .project .tab_file_menu_search input{
+	border-radius: 0;
+	border: none;
+}
+#solutionmanager .project .tab_file_menu_row{
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	-webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    cursor: default;
+}
+#solutionmanager .project .tab_file_menu_row_title{
+	font-size: large;
+	height: 30px;
+	line-height: 30px;
+}
+#solutionmanager .project .tab_file_menu_row_title:hover{
+	background-color: #E5E5E5;
+	color: #000;
+}
+#solutionmanager .project .tab_file_menu_row_title>span{
+	float: right;
+	line-height: 30px;
+	cursor: pointer;
+}
+#solutionmanager .project .tab_file_menu_row_body>ul,#solutionmanager .project .tab_file_menu_row_fresh>ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#solutionmanager .project .tab_file_menu_row_body>ul>li{
+	height: 20px;
+	line-height: 20px;
+}
+#solutionmanager .project .tab_file_menu_row_body>ul>li:hover{
+	background-color: #E5E5E5;
+	color: #000;
+}
+#solutionmanager .project .tab_file_menu_row_body>ul>li>.text_li{
+	font-size: small;
+	position: absolute;
+	left: 20px;
+	right: 35px;
+	word-break:keep-all; /* 不换行 */
+	white-space:nowrap; /* 不换行 */
+	overflow:hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+#solutionmanager .project .tab_file_menu_row_body>ul>li>.btn_li{
+	float: right;
+	line-height: 20px;
+	padding-right: 15px;
+	cursor: pointer;
+}
+#solutionmanager .project .tab_file_menu_row_fresh>ul>li{
+	height: 40px;
+}
+#solutionmanager .project .tab_file_menu_row_fresh>ul>li>span{
+	height: 20px;
+	line-height: 20px;
+	color: #fff;
+	font-size: small;
+	position: absolute;
+	left: 20px;
+	right: 35px;
+	word-break:keep-all; /* 不换行 */
+	white-space:nowrap; /* 不换行 */
+	overflow:hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+	text-overflow:ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
+#solutionmanager .project .tab_file_menu_row_fresh>ul>li>div{
+	height: 20px;
+	position: absolute;
+	bottom: 0;
+	left: 20px;
+	right: 35px;
+	margin-bottom: 0;
+}
+/*setting*/
+#setting .btn_header{
+	float: right;
+	margin-left: 10px;
+	cursor: pointer;
+}
+#setting .changpwd{
+	transition: all linear 0.5s;
+	height: 160px;
+}
+#setting .changpwd .changpwd_body label{
+	text-align: right;
+}
+#setting .changpwd .changpwd_footer{
+	padding: 10px;
+	border-top: 1px solid #E5E5E5;
+}
+#setting .settag{
+	transition: all linear 0.5s;
+	height: auto;
+}
